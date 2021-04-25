@@ -1,0 +1,42 @@
+﻿  balll.cpp
+  direction_vector.cpp
+  drop.cpp
+  entity.cpp
+  Isometry.cpp
+  keyboard_x.cpp
+  olcExampleProgram.cpp
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(110,46): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(200,57): warning C4244: 'argument': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(200,44): warning C4244: 'argument': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(200,31): warning C4244: 'argument': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(208,74): warning C4244: 'argument': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(208,55): warning C4244: 'argument': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(208,36): warning C4244: 'argument': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(446,36): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(446,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(474,9): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\olcExampleProgram.cpp(474,26): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  particle.cpp
+  tile.cpp
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\tile.cpp(13,10): warning C4244: 'initializing': conversion from 'const double' to 'int', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\tile.cpp(14,10): warning C4244: 'initializing': conversion from 'const double' to 'int', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\tile.cpp(15,10): warning C4244: 'initializing': conversion from 'const double' to 'int', possible loss of data
+C:\Users\swede\source\repos\BlankPixelEngine\BlankPixelEngine\tile.cpp(42,13): warning C4018: '>=': signed/unsigned mismatch
+  vec3d.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 1299 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  BlankPixelEngine.vcxproj -> C:\Users\swede\source\repos\BlankPixelEngine\Release\BlankPixelEngine.exe

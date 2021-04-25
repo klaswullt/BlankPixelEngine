@@ -1,0 +1,492 @@
+
+
+
+/**/
+/*
+
+#pragma once
+
+
+
+
+	struct drop
+	{
+		int z;
+		double energy;
+		double mass;
+		olc::Pixel RGB;
+		olc::vd2d pos;
+		olc::vd2d velocity;
+
+	};
+	struct materialx
+	{
+
+		double depth;
+		int on;
+		int quantity;
+
+	};
+
+class watersimulator :
+    public olc::PixelGameEngine
+{
+public:
+
+	materialx surface[101][101];
+
+	materialx water[101][101];
+
+	std::vector<drop> drops;
+
+
+	std::default_random_engine generator;
+
+
+	olc::vd2d getbounce(int x, int y, int level)
+	{
+
+
+
+		olc::vd2d output;
+
+		if (x >= 5 && x >= 95)
+		{
+			if (y >= 5 && y >= 95)
+			{
+				double x_force = 0;
+				double y_force = 0;
+
+
+				for (int i = -1; i <= 1; i++)
+				{
+					for (int j = -1; j <= 1; j++)
+					{
+
+
+						x_force += water[x + i][y].quantity - surface[x][y].depth;
+						y_force += water[x][y + j].quantity - surface[x][y].depth;
+
+					}
+				}
+
+
+
+				output.x = int(x_force) + 0.1;
+				output.y = int(y_force) + 0.0;
+
+
+				//		output.x =  2.0 ;
+				//		output.y =  2.0 ;
+				output.norm();
+
+
+				return output;
+			}
+
+
+
+
+
+
+
+		}
+		else
+		{
+
+			std::uniform_int_distribution<int> d_x(-2, 2);
+			std::uniform_int_distribution<int> d_y(-2, 2);
+
+			output = olc::vd2d(d_x(generator), d_y(generator));
+
+
+		}
+
+
+
+		return output;
+
+	}
+
+	olc::vd2d flowmass(int x, int y, int level, double dropwater)
+	{
+
+
+
+		olc::vd2d output;
+
+
+		double T = 0;
+
+		if (x >= 5 && x >= 95)
+		{
+			if (y >= 5 && y >= 95)
+			{
+
+
+				water[x][y].quantity -= 10;
+
+				for (int i = -2; i <= 2; i++)
+				{
+					for (int j = -2; j <= 2; j++)
+					{
+						T += (double(water[x + i][y + j].quantity) / double(4 * 4));
+
+					}
+				}
+
+
+				for (int i = -2; i <= 2; i++)
+				{
+					for (int j = -2; j <= 2; j++)
+					{
+						water[x + i][y + j].quantity = int(T);
+
+					}
+				}
+			}
+
+
+
+
+		}
+		return output;
+	}
+
+	olc::vd2d dropmass(int x, int y, int level, double dropmass)
+	{
+
+
+
+		olc::vd2d output;
+
+
+		int  value = 0;
+
+		if (x >= 5 && x >= 95)
+		{
+			if (y >= 5 && y >= 95)
+			{
+
+
+				water[x][y].quantity -= 10;
+
+				for (int i = -2; i <= 2; i++)
+				{
+					for (int j = -2; j <= 2; j++)
+					{
+
+
+					}
+				}
+				for (int i = -2; i <= 2; i++)
+				{
+					for (int j = -2; j <= 2; j++)
+					{
+						water[x + i][y + j].quantity++;
+
+					}
+				}
+			}
+
+
+
+
+		}
+		return output;
+	}
+
+	
+
+	double getenergy(olc::vd2d A, olc::vd2d B)
+	{
+
+		olc::vd2d C = A + B;
+
+		return double(sqrt((C.x * C.x) + (C.y * C.y)));
+
+	};
+
+	bool OnUserCreate() override
+	{
+
+
+		while (drops.size() <= 2000)
+		{
+
+			drop newdrop;
+
+			std::uniform_int_distribution<int> distribution(-100, 100);
+			std::uniform_int_distribution<int> distribution_Y(-100, 100);
+
+
+			newdrop.energy = 1.0;
+			newdrop.pos.x = double(distribution(generator)) + 50;
+			newdrop.pos.y = double(distribution_Y(generator)) + 50;
+
+			newdrop.velocity.x = 1.0;
+			newdrop.velocity.y = 0.1;
+
+
+
+			drops.push_back(newdrop);
+
+
+
+		}
+
+
+		double radian = 1;
+
+		double B = 1;
+
+		for (int i = 0; i < 99; i++)
+		{
+			for (int j = 0; j < 99; j++)
+			{
+				std::uniform_int_distribution<int> distribution_h(30, 170);
+
+				//				B += double(distribution_h(generator));
+
+				//				radian = ( B + sqrt(i*i+j*j))/ 4 ;
+
+				radian = double(distribution_h(generator)) + (i * i * j * j * 20);
+
+
+				double degree = (radian * PI / 180.0);
+
+				surface[i][j].depth = cos(degree);
+				water[i][j].on = 0;
+
+			}
+
+		}
+
+
+		std::default_random_engine generator;
+
+
+
+		int id = 2;
+
+
+		return true;
+	}
+
+	bool OnUserUpdate(float fElapsedTime) override
+	{
+
+
+
+		Clear(olc::BLACK);
+		SetPixelMode(olc::Pixel::ALPHA);
+
+
+
+		olc::vf2d origo = olc::vf2d(ScreenWidth() / 2, ScreenHeight() / 2);
+
+
+
+		DrawString(1, 1, std::to_string(drops.size()));
+
+
+
+		int i = 1;
+
+		while (i < drops.size()
+			&& drops.size() != NULL
+			&& drops.size() > 10
+			)
+		{
+
+
+
+
+			if (drops[i].pos.x > ScreenWidth() / 4)
+			{
+				drops[i].pos.x = -(ScreenWidth() / 4) + 10;
+
+
+			}
+
+			if (drops[i].pos.x < -(ScreenWidth() / 4))
+			{
+				drops[i].pos.x = ScreenWidth() / 4 - 10;
+
+			}
+
+			if (drops[i].pos.y > ScreenHeight() / 4)
+			{
+				drops[i].pos.y = -(ScreenHeight() / 4) + 10;
+
+
+
+			}
+
+			if (drops[i].pos.y < -(ScreenHeight() / 4))
+			{
+				drops[i].pos.y = ScreenHeight() / 4 - 10;
+
+
+			}
+
+
+			int i1 = drops[i].pos.x + 50;
+			int j1 = drops[i].pos.y + 50;
+
+
+			if (i1 <= 99
+				&& i1 >= 1
+				&& j1 <= 99
+				&& j1 >= 1
+				&& drops[i].mass < 10.0
+				)
+			{
+
+
+				drops[i].z = water[i1][j1].depth;
+
+
+				drops[i].velocity += getbounce(i1, j1, 1);
+				// drops[i].velocity.norm();
+
+				drops[i].pos += drops[i].velocity;
+
+
+
+				drops[i].energy -= 0.1;
+
+				drops[i].mass = 0.2;
+
+
+
+				olc::vd2d screen = olc::vd2d((j1 - i1) * 0.5, ((j1 + i1) * 0.2));
+
+				screen.y *= -1;
+
+				olc::Pixel colour2(
+					255 * drops[i].velocity.mag() * 0.1,
+					255 * drops[i].velocity.mag() * 0.1,
+					255 * drops[i].velocity.mag() * 1.0
+				);
+
+				//		Draw(screen + origo, colour2);
+
+				water[i1][j1].quantity = 1;
+			}
+			else
+			{
+
+
+				water[i1][j1].quantity = 2;
+
+				drops.erase(drops.begin() + i);
+
+
+				// surface[i1][j1].depth -= 0.1;
+
+			}
+
+
+			i++;
+		}
+
+
+
+
+
+		// loop ground top map
+		for (int i = 0; i < 99; i++)
+		{
+			for (int j = 0; j < 99; j++)
+			{
+				for (double g = 0; g < surface[i][j].depth; g += 0.1)
+				{
+					olc::vd2d screen((j - i) * 0.5, ((j + i) * 0.2) + g);
+
+					screen.y *= -1;
+
+					olc::Pixel colour(
+						255 * surface[i][j].depth * i * 0.009,
+						255 * surface[i][j].depth * i * 0.009,
+						255 * surface[i][j].depth * i * 0.009);
+
+					Draw(screen + origo, colour);
+				}
+			}
+		}
+
+
+		// loop water top map
+
+		for (int i = 0; i < 99; i++)
+		{
+			for (int j = 0; j < 99; j++)
+			{
+
+				if (water[i][j].quantity >= 1)
+				{
+
+					for (double g = surface[i][j].depth; g < (surface[i][j].depth + water[i][j].quantity); g += 0.1)
+					{
+						olc::vd2d screen((j - i) * 0.5, ((j + i) * 0.2) + g);
+
+						screen.y *= -1;
+
+						olc::Pixel colour(
+							255 * surface[i][j].depth * g * 0.01,
+							255 * surface[i][j].depth * g * 0.01,
+							255 * surface[i][j].depth * g * 0.9);
+
+						Draw(screen + origo, colour);
+
+					}
+
+
+					if (water[i][j].quantity == 2)
+					{
+						drop newdrop;
+
+						newdrop.energy = 50.0;
+						newdrop.pos.x = i - 50;
+						newdrop.pos.y = j - 50;
+
+						newdrop.velocity += getbounce(i, j, 1);
+
+						drops.push_back(newdrop);
+					}
+
+					water[i][j].quantity = 0;
+
+					//			surface[i][j].depth = 5;
+
+
+				}
+				else
+				{
+
+
+
+				}
+
+
+
+			}
+		}
+
+
+
+
+
+
+
+
+		return true;
+	}
+
+
+	
+
+};
+
+*/

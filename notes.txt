@@ -1,0 +1,23 @@
+#pragma once
+/*
+start with a pointand angle
+increase angle by small amount
+
+pick a random number
+
+if the abs(random number - previous random number) > some threshold
+flip angle mode
+
+if angle mode is true
+increase angle by small amount
+else if angle mode is false
+decrease angle by small amount
+
+add x by cosine angle
+add y by sine angle
+
+if the rounded point doesnt equal the old rounded point
+increase the color
+
+
+ */
